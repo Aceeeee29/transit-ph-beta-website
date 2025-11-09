@@ -1008,4 +1008,29 @@ html {
     .cta-content h2 {
         font-size: 2rem;
     }
+
+    .about-text h1 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .about-text p {
+        font-size: 1rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .about-features {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .about-feature {
+        font-size: 0.9rem;
+    }
+
+    .about-feature i {
+        font-size: 1.2rem;
+    }
 }
