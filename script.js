@@ -5,9 +5,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+            const navbarHeight = document.getElementById('navbar').offsetHeight;
+            const targetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight - 12;
+
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
             });
         }
     });
