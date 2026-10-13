@@ -1297,6 +1297,19 @@ body {
     padding: 0.75rem 1rem;
 }
 
+.version-badge {
+    display: block;
+    width: fit-content;
+    margin: 0.8rem auto 0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: #e7f7eb;
+    color: #2e9a54;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
 .qr-section {
     margin-top: 2rem;
 }
