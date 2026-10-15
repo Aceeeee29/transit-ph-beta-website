@@ -1427,11 +1427,13 @@ body {
 }
 
 @media (max-width: 420px) {
-    .nav-container { align-items: flex-start; }
     .logo { font-size: 1.25rem; }
-    .nav-links { gap: 0.55rem; }
-    .nav-links a { font-size: 0.68rem; }
     .hero-buttons .btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 359px) {
+    .nav-links { gap: 0.55rem; }
+    .nav-links a { font-size: 0.7rem; }
 }
 
 .section {
@@ -1542,5 +1544,116 @@ body {
     #download {
         padding-top: 3.75rem;
         padding-bottom: 3.75rem;
+    }
+}
+
+/* Usability and accessibility fixes */
+.logo {
+    text-decoration: none;
+}
+
+/* Enlarge nav tap targets without changing the navbar height */
+.nav-links a {
+    display: inline-block;
+    padding: 0.8rem 0;
+    margin: -0.8rem 0;
+}
+
+.nav-links a::after {
+    bottom: calc(0.8rem - 5px);
+}
+
+/* Keep the hover lift working after the scroll-reveal animation has run */
+.feature-card.animate-in:hover {
+    transform: translateY(-3px);
+}
+
+.download-card.animate-in:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card.animate-in:hover {
+    transform: translateY(-5px);
+}
+
+/* Higher-contrast green for small text on the light green tint */
+.version-badge {
+    color: #1f7a3e;
+}
+
+.download-icon {
+    color: #1f7a3e !important;
+}
+
+/* Visible keyboard focus on both light and dark backgrounds */
+a:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px var(--blue-900);
+    border-radius: 4px;
+}
+
+.btn:focus-visible {
+    border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .feature-card,
+    .download-card,
+    .stat-card {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+/* Width/height attributes reserve space to prevent layout shift; keep the original rendered size */
+.app-preview-image {
+    height: auto;
+}
+
+/* Logo */
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-img {
+    display: block;
+    width: auto;
+    height: 36px;
+}
+
+.cta-logo {
+    display: block;
+    width: 80px;
+    height: auto;
+    margin: 0 auto 1rem;
+}
+
+/* Phones: show the badge only, and keep the wordmark available to screen readers */
+@media (max-width: 420px) {
+    .logo-img {
+        height: 32px;
+    }
+
+    .logo span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
     }
 }

@@ -10,35 +10,27 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
             window.scrollTo({
                 top: targetPosition,
-                behavior: 'smooth'
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
             });
+
+            history.pushState(null, '', this.getAttribute('href'));
         }
     });
-});
-
-// Navbar background change on scroll
-window.addEventListener('scroll', function() {
-    const navbar = document.getElementById('navbar');
-    if (window.scrollY > 50) {
-        navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.backdropFilter = 'blur(10px)';
-    } else {
-        navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.backdropFilter = 'blur(10px)';
-    }
 });
 
 // Optional: Add active class to nav links on scroll
 const sections = document.querySelectorAll('.section');
 const navLinks = document.querySelectorAll('.nav-links a');
 
-window.addEventListener('scroll', () => {
+let scrollTicking = false;
+
+function updateActiveLink() {
     let current = '';
 
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
-        if (pageYOffset >= sectionTop - sectionHeight / 3) {
+        if (window.scrollY >= sectionTop - sectionHeight / 3) {
             current = section.getAttribute('id');
         }
     });
@@ -49,7 +41,16 @@ window.addEventListener('scroll', () => {
             link.classList.add('active');
         }
     });
-});
+
+    scrollTicking = false;
+}
+
+window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+        scrollTicking = true;
+        requestAnimationFrame(updateActiveLink);
+    }
+}, { passive: true });
 
 // Intersection Observer for animations
 const observerOptions = {
@@ -61,6 +62,7 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('animate-in');
+            observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
