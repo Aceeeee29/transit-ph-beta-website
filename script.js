@@ -407,7 +407,7 @@ $$('.reveal').forEach(el => revealObserver.observe(el));
         if (qrImage.getAttribute('src') !== qrUrl) qrImage.src = qrUrl;
     }
 
-    // GitHub release URLs look like .../releases/download/v1.0.28/file.apk
+    // GitHub release URLs look like .../releases/download/v1.0.30/file.apk
     const version = apkLink.href.match(/\/download\/(v?[\d.]+)\//);
     if (versionBadge && version) versionBadge.textContent = version[1].startsWith('v') ? version[1] : `v${version[1]}`;
 })();
