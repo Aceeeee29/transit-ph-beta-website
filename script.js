@@ -1,138 +1,12 @@
 'use strict';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
 /* ==========================================================================
-   Toasts + confetti
-   ========================================================================== */
-const toastRegion = $('#toasts');
-
-function toast(message, icon = 'fa-trophy') {
-    const el = document.createElement('div');
-    el.className = 'toast';
-    el.innerHTML = `<i class="fas ${icon}" aria-hidden="true"></i><span></span>`;
-    el.lastElementChild.textContent = message;
-    toastRegion.appendChild(el);
-    setTimeout(() => {
-        el.classList.add('out');
-        setTimeout(() => el.remove(), 400);
-    }, 3200);
-}
-
-function confetti() {
-    if (prefersReducedMotion) return;
-
-    const canvas = document.createElement('canvas');
-    canvas.className = 'confetti';
-    document.body.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
-    const w = (canvas.width = window.innerWidth);
-    const h = (canvas.height = window.innerHeight);
-    const colors = ['#ffb52e', '#2b91d1', '#ffffff', '#1769aa', '#8cdaff'];
-
-    const pieces = Array.from({ length: 70 }, () => ({
-        x: w / 2,
-        y: h - 50,
-        vx: (Math.random() - 0.5) * 15,
-        vy: -(Math.random() * 12 + 9),
-        size: Math.random() * 6 + 5,
-        rot: Math.random() * 6,
-        spin: (Math.random() - 0.5) * 0.4,
-        color: colors[Math.floor(Math.random() * colors.length)]
-    }));
-
-    const FRAMES = 100;
-    let frame = 0;
-
-    (function tick() {
-        ctx.clearRect(0, 0, w, h);
-        for (const p of pieces) {
-            p.vy += 0.36;
-            p.vx *= 0.99;
-            p.x += p.vx;
-            p.y += p.vy;
-            p.rot += p.spin;
-            ctx.save();
-            ctx.translate(p.x, p.y);
-            ctx.rotate(p.rot);
-            ctx.globalAlpha = Math.max(0, 1 - frame / FRAMES);
-            ctx.fillStyle = p.color;
-            ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
-            ctx.restore();
-        }
-        if (++frame < FRAMES) requestAnimationFrame(tick);
-        else canvas.remove();
-    })();
-}
-
-/* ==========================================================================
-   Badges (demo gamification, saved in this browser only)
-   ========================================================================== */
-const BADGE_KEY = 'transitph.badges';
-const BADGE_NAMES = {
-    'first-ride': 'First Ride',
-    'pin-dropper': 'Pin Dropper',
-    'map-explorer': 'Map Explorer',
-    'feature-hunter': 'Feature Hunter',
-    'community-voice': 'Community Voice',
-    'end-of-line': 'End of the Line'
-};
-
-const badgeEls = $$('.badge');
-let unlocked = new Set();
-
-try {
-    const saved = JSON.parse(localStorage.getItem(BADGE_KEY) || '[]');
-    if (Array.isArray(saved)) unlocked = new Set(saved.filter(id => id in BADGE_NAMES));
-} catch (err) {
-    /* storage unavailable - badges just won't persist */
-}
-
-function renderBadges() {
-    const total = badgeEls.length;
-    badgeEls.forEach(el => {
-        const on = unlocked.has(el.dataset.badge);
-        el.classList.toggle('is-unlocked', on);
-        $('.badge-state', el).textContent = on ? 'Unlocked' : 'Locked';
-    });
-    $('#badgeRing').style.setProperty('--p', (unlocked.size / total) * 100);
-    $('#badgeCount').textContent = `${unlocked.size}/${total}`;
-    $('#badgeSummary').textContent = `${unlocked.size} of ${total} unlocked`;
-}
-
-function saveBadges() {
-    try {
-        localStorage.setItem(BADGE_KEY, JSON.stringify([...unlocked]));
-    } catch (err) {
-        /* ignore */
-    }
-}
-
-function unlockBadge(id) {
-    if (unlocked.has(id)) return;
-    unlocked.add(id);
-    saveBadges();
-    renderBadges();
-    const done = unlocked.size === badgeEls.length;
-    toast(done ? 'All badges unlocked. Nice commute!' : `Badge unlocked: ${BADGE_NAMES[id]}`);
-    confetti();
-}
-
-$('#badgeReset').addEventListener('click', () => {
-    unlocked.clear();
-    saveBadges();
-    renderBadges();
-});
-
-renderBadges();
-
-/* ==========================================================================
-   Navigation: smooth anchors, scroll progress, rail, active links
+   Navigation: smooth anchors, active links
    ========================================================================== */
 const navbar = $('#navbar');
 
@@ -147,12 +21,8 @@ $$('a[href^="#"]').forEach(anchor => {
     });
 });
 
-const SECTION_IDS = ['home', 'planner', 'features', 'badges', 'community', 'download', 'about'];
+const SECTION_IDS = ['home', 'planner', 'features', 'community', 'download', 'about'];
 const sectionEls = SECTION_IDS.map(id => document.getElementById(id));
-const progressBar = $('.scroll-progress span');
-const railLinks = $$('.rail a');
-const railFill = $('.rail-fill');
-const railVehicle = $('.rail-vehicle');
 const navLinks = $$('.nav-links a');
 const navTargets = new Set(navLinks.map(a => a.getAttribute('href').slice(1)));
 
@@ -160,30 +30,13 @@ let scrollTicking = false;
 
 function onScroll() {
     scrollTicking = false;
-
-    const y = window.scrollY;
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    progressBar.style.transform = `scaleX(${maxScroll > 0 ? y / maxScroll : 0})`;
-    navbar.classList.toggle('is-scrolled', y > 8);
+    navbar.classList.toggle('is-scrolled', window.scrollY > 8);
 
     // Which section is "current" - probe a line 35% down the viewport
-    const probe = y + window.innerHeight * 0.35;
-    const tops = sectionEls.map(el => el.offsetTop);
+    const probe = window.scrollY + window.innerHeight * 0.35;
     let index = 0;
-    tops.forEach((top, i) => {
-        if (probe >= top) index = i;
-    });
-
-    // Rail position: station i when its section starts, interpolated towards the next one
-    const last = SECTION_IDS.length - 1;
-    const next = tops[index + 1];
-    const frac = index < last ? clamp((probe - tops[index]) / (next - tops[index]), 0, 1) : 0;
-    const position = (index + frac) / last;
-    railFill.style.transform = `scaleY(${position})`;
-    railVehicle.style.top = `${position * 100}%`;
-    railLinks.forEach((link, i) => {
-        link.classList.toggle('active', i === index);
-        link.classList.toggle('passed', i < index);
+    sectionEls.forEach((el, i) => {
+        if (probe >= el.offsetTop) index = i;
     });
 
     // Nav highlight: nearest section at or above the current one that has a nav link
@@ -195,10 +48,6 @@ function onScroll() {
         }
     }
     navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${navId}`));
-
-    if (maxScroll > 0 && y + window.innerHeight >= document.documentElement.scrollHeight - 6) {
-        unlockBadge('end-of-line');
-    }
 }
 
 window.addEventListener('scroll', () => {
@@ -212,185 +61,6 @@ window.addEventListener('load', onScroll);
 onScroll();
 
 /* ==========================================================================
-   Scroll reveal
-   ========================================================================== */
-const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        el.classList.add('in');
-        revealObserver.unobserve(el);
-        // Hand the element back to its normal styles so hover effects aren't slowed by the reveal transition
-        setTimeout(() => el.classList.remove('reveal', 'in'), 1200);
-    });
-}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-$$('.reveal').forEach(el => revealObserver.observe(el));
-
-/* ==========================================================================
-   Hero: split title, reactive dot grid, tilting phone
-   ========================================================================== */
-(function initHero() {
-    const hero = $('#home');
-    const canvas = $('#heroCanvas');
-    const ctx = canvas.getContext('2d');
-    const tilt = $('#phoneTilt');
-    const chips = $$('.chip', tilt);
-    const title = $('.hero-title .gradient-text');
-
-    // Title: words rise in one by one
-    const words = title.textContent.trim().split(/\s+/);
-    title.setAttribute('aria-label', words.join(' '));
-    title.innerHTML = '';
-    words.forEach((word, i) => {
-        const outer = document.createElement('span');
-        outer.className = 'w';
-        outer.setAttribute('aria-hidden', 'true');
-        outer.style.setProperty('--i', i);
-        const inner = document.createElement('span');
-        inner.textContent = word;
-        outer.appendChild(inner);
-        title.appendChild(outer);
-        title.appendChild(document.createTextNode(' '));
-    });
-    $('.hero-title').classList.add('is-split');
-
-    // Dot grid
-    const GAP = 36;
-    const RADIUS = 160;
-    const PULSE_LIFE = 1100;
-    let width = 0;
-    let height = 0;
-    let dots = [];
-    const pulses = [];
-    const pointer = { x: 0, y: 0, tx: 0, ty: 0, s: 0, target: 0, nx: 0, ny: 0, tnx: 0, tny: 0 };
-
-    function resize() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const rect = hero.getBoundingClientRect();
-        width = rect.width;
-        height = rect.height;
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        dots = [];
-        for (let y = GAP / 2; y < height; y += GAP) {
-            for (let x = GAP / 2; x < width; x += GAP) dots.push([x, y]);
-        }
-    }
-
-    function draw(now) {
-        ctx.clearRect(0, 0, width, height);
-        for (const [ox, oy] of dots) {
-            let x = ox;
-            let y = oy;
-            let alpha = 0.14 + 0.05 * Math.sin(now / 1300 + (ox + oy) / 150);
-            let radius = 1.3;
-
-            if (pointer.s > 0.01) {
-                const dx = ox - pointer.x;
-                const dy = oy - pointer.y;
-                const dist = Math.hypot(dx, dy) || 1;
-                if (dist < RADIUS) {
-                    const k = (1 - dist / RADIUS) * pointer.s;
-                    x += (dx / dist) * k * k * 20;
-                    y += (dy / dist) * k * k * 20;
-                    alpha += k * 0.7;
-                    radius += k * 2.2;
-                }
-            }
-
-            for (const pulse of pulses) {
-                const age = now - pulse.t;
-                const dx = ox - pulse.x;
-                const dy = oy - pulse.y;
-                const dist = Math.hypot(dx, dy) || 1;
-                const band = Math.abs(dist - age * 0.55);
-                if (band < 48) {
-                    const k = (1 - band / 48) * (1 - age / PULSE_LIFE);
-                    x += (dx / dist) * k * 14;
-                    y += (dy / dist) * k * 14;
-                    alpha += k * 0.8;
-                    radius += k * 1.8;
-                }
-            }
-
-            ctx.fillStyle = `rgba(255,255,255,${clamp(alpha, 0, 1)})`;
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    let running = false;
-    let heroVisible = true;
-
-    function frame(now) {
-        pointer.s += (pointer.target - pointer.s) * 0.08;
-        pointer.x += (pointer.tx - pointer.x) * 0.2;
-        pointer.y += (pointer.ty - pointer.y) * 0.2;
-        pointer.nx += (pointer.tnx - pointer.nx) * 0.08;
-        pointer.ny += (pointer.tny - pointer.ny) * 0.08;
-
-        while (pulses.length && now - pulses[0].t > PULSE_LIFE) pulses.shift();
-        draw(now);
-
-        tilt.style.transform = `rotateY(${pointer.nx * 12}deg) rotateX(${-pointer.ny * 8}deg)`;
-        chips.forEach(chip => {
-            const depth = Number(chip.dataset.depth) || 0;
-            chip.style.translate = `${pointer.nx * depth}px ${pointer.ny * depth * 0.6}px`;
-        });
-
-        if (heroVisible) requestAnimationFrame(frame);
-        else running = false;
-    }
-
-    function start() {
-        if (running || prefersReducedMotion) return;
-        running = true;
-        requestAnimationFrame(frame);
-    }
-
-    hero.addEventListener('pointermove', event => {
-        const rect = hero.getBoundingClientRect();
-        pointer.tx = event.clientX - rect.left;
-        pointer.ty = event.clientY - rect.top;
-        if (pointer.target === 0) {
-            pointer.x = pointer.tx;
-            pointer.y = pointer.ty;
-        }
-        pointer.target = 1;
-        pointer.tnx = (pointer.tx / rect.width - 0.5) * 2;
-        pointer.tny = (pointer.ty / rect.height - 0.5) * 2;
-    });
-
-    hero.addEventListener('pointerleave', () => {
-        pointer.target = 0;
-        pointer.tnx = 0;
-        pointer.tny = 0;
-    });
-
-    hero.addEventListener('pointerdown', event => {
-        const rect = hero.getBoundingClientRect();
-        pulses.push({ x: event.clientX - rect.left, y: event.clientY - rect.top, t: performance.now() });
-    });
-
-    new IntersectionObserver(([entry]) => {
-        heroVisible = entry.isIntersecting;
-        if (heroVisible) start();
-    }).observe(hero);
-
-    window.addEventListener('resize', () => {
-        resize();
-        if (prefersReducedMotion) draw(0);
-    });
-
-    resize();
-    if (prefersReducedMotion) draw(0);
-    else start();
-})();
-
-/* ==========================================================================
    Download: keep the QR code and version badge in sync with the APK button
    --------------------------------------------------------------------------
    To release a new version, change ONLY the href of the "Download APK" button
@@ -400,6 +70,7 @@ $$('.reveal').forEach(el => revealObserver.observe(el));
     const apkLink = $('.btn-download');
     const qrImage = $('.qr-code img');
     const versionBadge = $('.version-badge');
+    const footerVersion = $('.footer-version');
     if (!apkLink) return;
 
     if (qrImage) {
@@ -410,34 +81,8 @@ $$('.reveal').forEach(el => revealObserver.observe(el));
     // GitHub release URLs look like .../releases/download/v1.0.30/file.apk
     const version = apkLink.href.match(/\/download\/(v?[\d.]+)\//);
     if (versionBadge && version) versionBadge.textContent = version[1].startsWith('v') ? version[1] : `v${version[1]}`;
+    if (footerVersion && version) footerVersion.textContent = version[1].replace(/^v/, '');
 })();
-
-/* ==========================================================================
-   Magnetic buttons + pointer spotlight
-   ========================================================================== */
-if (canHover && !prefersReducedMotion) {
-    $$('.btn').forEach(btn => {
-        btn.addEventListener('pointermove', event => {
-            const rect = btn.getBoundingClientRect();
-            const dx = (event.clientX - (rect.left + rect.width / 2)) * 0.22;
-            const dy = (event.clientY - (rect.top + rect.height / 2)) * 0.3;
-            btn.style.setProperty('--mx', `${dx.toFixed(1)}px`);
-            btn.style.setProperty('--my', `${dy.toFixed(1)}px`);
-        });
-        btn.addEventListener('pointerleave', () => {
-            btn.style.removeProperty('--mx');
-            btn.style.removeProperty('--my');
-        });
-    });
-}
-
-$$('[data-spot]').forEach(el => {
-    el.addEventListener('pointermove', event => {
-        const rect = el.getBoundingClientRect();
-        el.style.setProperty('--px', `${event.clientX - rect.left}px`);
-        el.style.setProperty('--py', `${event.clientY - rect.top}px`);
-    });
-});
 
 /* ==========================================================================
    Route planner demo
@@ -681,12 +326,9 @@ const MODE_INFO = {
         ids.forEach(id => pins[id].classList.add('is-on-route'));
         drawRoute(ids);
         renderResult(legs);
-        if (fromUser) unlockBadge('first-ride');
     }
 
     function onPin(id) {
-        unlockBadge('pin-dropper');
-
         const ping = document.createElement('span');
         ping.className = 'ping';
         pins[id].appendChild(ping);
@@ -719,7 +361,6 @@ const MODE_INFO = {
         const on = wrap.classList.toggle('is-3d');
         view3dBtn.setAttribute('aria-pressed', String(on));
         $('span', view3dBtn).textContent = on ? 'Back to 2D' : 'View in 3D';
-        if (on) unlockBadge('map-explorer');
     });
 
     // Show a sample trip the first time the planner scrolls into view
@@ -752,7 +393,6 @@ const MODE_INFO = {
             panels[i].hidden = !on;
         });
         seen.add(index);
-        if (seen.size === tabs.length) unlockBadge('feature-hunter');
         if (focus) tabs[index].focus();
         feedPanelOpen = index === 0;
     }
@@ -817,7 +457,6 @@ const MODE_INFO = {
 
     $('#shareUpdate').addEventListener('click', () => {
         addItem(pickUnused(), true);
-        unlockBadge('community-voice');
     });
 
     new IntersectionObserver(([entry]) => {

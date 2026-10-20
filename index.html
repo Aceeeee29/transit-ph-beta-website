@@ -17,7 +17,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
     <!--
@@ -25,8 +24,6 @@
         in assets/photos/ (see assets/photos/README.md). Drop a file with that name in the folder and
         it replaces the placeholder automatically - no code changes needed.
     -->
-
-    <div class="scroll-progress" aria-hidden="true"><span></span></div>
 
     <nav id="navbar" aria-label="Main">
         <div class="nav-container">
@@ -44,27 +41,9 @@
         </div>
     </nav>
 
-    <!-- Transit-line page rail (wide screens only) -->
-    <nav class="rail" aria-label="Page sections">
-        <div class="rail-track">
-            <span class="rail-line"><span class="rail-fill"></span></span>
-            <ol>
-                <li style="--i:0"><a href="#home"><span class="dot"></span><span class="lbl">Home</span></a></li>
-                <li style="--i:1"><a href="#planner"><span class="dot"></span><span class="lbl">Route planner</span></a></li>
-                <li style="--i:2"><a href="#features"><span class="dot"></span><span class="lbl">Features</span></a></li>
-                <li style="--i:3"><a href="#badges"><span class="dot"></span><span class="lbl">Badges</span></a></li>
-                <li style="--i:4"><a href="#community"><span class="dot"></span><span class="lbl">Community</span></a></li>
-                <li style="--i:5"><a href="#download"><span class="dot"></span><span class="lbl">Download</span></a></li>
-                <li style="--i:6"><a href="#about"><span class="dot"></span><span class="lbl">About</span></a></li>
-            </ol>
-            <span class="rail-vehicle" aria-hidden="true"><i class="fas fa-bus"></i></span>
-        </div>
-    </nav>
-
     <main>
         <!-- ============ HERO ============ -->
         <section id="home" class="hero">
-            <canvas id="heroCanvas" aria-hidden="true"></canvas>
             <div class="container">
                 <div class="hero-grid">
                     <div class="hero-content">
@@ -85,18 +64,17 @@
                                 Try the route planner
                             </a>
                         </div>
-                        <p class="hero-hint"><i class="fas fa-hand-pointer" aria-hidden="true"></i> Psst - move your cursor, or click anywhere on the blue.</p>
                     </div>
                     <div class="hero-visual">
                         <div class="phone-tilt" id="phoneTilt">
                             <div class="app-preview">
                                 <img class="app-preview-image" src="assets/transitph-app-screen.jpg" width="922" height="2048" decoding="async" alt="TransitPH map screen showing a route from Valenzuela to Caloocan with a 39 minute estimate and fare range">
                             </div>
-                            <div class="chip chip-a" data-depth="26">
+                            <div class="chip chip-a">
                                 <span class="chip-icon"><i class="fas fa-clock" aria-hidden="true"></i></span>
                                 <span><small>Malabon to Caloocan</small><strong>39 min</strong></span>
                             </div>
-                            <div class="chip chip-b" data-depth="-20">
+                            <div class="chip chip-b">
                                 <span class="chip-icon"><i class="fas fa-peso-sign" aria-hidden="true"></i></span>
                                 <span><small>Fare</small><strong>₱21-26 Estimated</strong></span>
                             </div>
@@ -106,27 +84,17 @@
             </div>
         </section>
 
-        <!-- ============ CITY TICKER ============ -->
-        <div class="ticker" aria-hidden="true">
-            <div class="ticker-track">
-                <span>Caloocan</span><i></i><span>Malabon</span><i></i><span>Navotas</span><i></i><span>Valenzuela</span><i></i>
-                <span>Caloocan</span><i></i><span>Malabon</span><i></i><span>Navotas</span><i></i><span>Valenzuela</span><i></i>
-                <span>Caloocan</span><i></i><span>Malabon</span><i></i><span>Navotas</span><i></i><span>Valenzuela</span><i></i>
-                <span>Caloocan</span><i></i><span>Malabon</span><i></i><span>Navotas</span><i></i><span>Valenzuela</span><i></i>
-            </div>
-        </div>
-
         <!-- ============ ROUTE PLANNER DEMO ============ -->
         <section id="planner" class="section section-light">
             <div class="container">
-                <div class="section-header reveal">
+                <div class="section-header">
                     <p class="kicker">Try it</p>
                     <h2 class="section-title">Plot a trip across CAMANAVA</h2>
                     <p class="section-description">
                         A little taste of the app. Tap two stops on the map (or use the lists) and watch the route get plotted.
                     </p>
                 </div>
-                <div class="planner reveal">
+                <div class="planner">
                     <div class="planner-panel">
                         <div class="field-row">
                             <label class="field">
@@ -194,7 +162,7 @@
         <!-- ============ FEATURES EXPLORER ============ -->
         <section id="features" class="section section-white">
             <div class="container">
-                <div class="section-header reveal">
+                <div class="section-header">
                     <p class="kicker">Features</p>
                     <h2 class="section-title">Everything for the everyday trip</h2>
                     <p class="section-description">
@@ -202,24 +170,24 @@
                     </p>
                 </div>
 
-                <div class="explorer reveal" id="explorer">
+                <div class="explorer" id="explorer">
                     <div class="tabs" role="tablist" aria-label="TransitPH features" aria-orientation="vertical">
-                        <button class="tab" role="tab" id="tab-updates" aria-controls="panel-updates" aria-selected="true" data-spot>
+                        <button class="tab" role="tab" id="tab-updates" aria-controls="panel-updates" aria-selected="true">
                             <span class="tab-icon"><i class="fas fa-sync-alt" aria-hidden="true"></i></span> Real Time Updates
                         </button>
-                        <button class="tab" role="tab" id="tab-route" aria-controls="panel-route" aria-selected="false" tabindex="-1" data-spot>
+                        <button class="tab" role="tab" id="tab-route" aria-controls="panel-route" aria-selected="false" tabindex="-1">
                             <span class="tab-icon"><i class="fas fa-route" aria-hidden="true"></i></span> Route Planning
                         </button>
-                        <button class="tab" role="tab" id="tab-badges" aria-controls="panel-badges" aria-selected="false" tabindex="-1" data-spot>
+                        <button class="tab" role="tab" id="tab-badges" aria-controls="panel-badges" aria-selected="false" tabindex="-1">
                             <span class="tab-icon"><i class="fas fa-trophy" aria-hidden="true"></i></span> Gamification
                         </button>
-                        <button class="tab" role="tab" id="tab-community" aria-controls="panel-community" aria-selected="false" tabindex="-1" data-spot>
+                        <button class="tab" role="tab" id="tab-community" aria-controls="panel-community" aria-selected="false" tabindex="-1">
                             <span class="tab-icon"><i class="fas fa-users" aria-hidden="true"></i></span> Community-Based
                         </button>
-                        <button class="tab" role="tab" id="tab-fare" aria-controls="panel-fare" aria-selected="false" tabindex="-1" data-spot>
+                        <button class="tab" role="tab" id="tab-fare" aria-controls="panel-fare" aria-selected="false" tabindex="-1">
                             <span class="tab-icon"><i class="fas fa-peso-sign" aria-hidden="true"></i></span> Fare Estimation
                         </button>
-                        <button class="tab" role="tab" id="tab-map" aria-controls="panel-map" aria-selected="false" tabindex="-1" data-spot>
+                        <button class="tab" role="tab" id="tab-map" aria-controls="panel-map" aria-selected="false" tabindex="-1">
                             <span class="tab-icon"><i class="fas fa-map" aria-hidden="true"></i></span> Map
                         </button>
                     </div>
@@ -270,7 +238,6 @@
                             <div class="stage-copy">
                                 <h3>Gamification</h3>
                                 <p>Earn badges and achievements while traveling.</p>
-                                <a href="#badges" class="text-link">Unlock a few badges on this page <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
                             </div>
                         </div>
 
@@ -322,71 +289,10 @@
             </div>
         </section>
 
-        <!-- ============ BADGES ============ -->
-        <section id="badges" class="section section-dark">
-            <div class="dot-pattern" aria-hidden="true"></div>
-            <div class="container">
-                <div class="section-header reveal">
-                    <p class="kicker kicker-light">Gamification</p>
-                    <h2 class="section-title">Earn badges while you travel</h2>
-                    <p class="section-description">
-                        TransitPH rewards commuters with badges and achievements. Poke around this page to get a feel for it - these are demo badges, not the app's actual list.
-                    </p>
-                </div>
-
-                <div class="badge-meta reveal">
-                    <div class="ring" id="badgeRing" style="--p:0"><span id="badgeCount">0/6</span></div>
-                    <div>
-                        <strong id="badgeSummary">0 of 6 unlocked</strong>
-                        <button type="button" class="link-btn" id="badgeReset">Reset progress</button>
-                    </div>
-                </div>
-
-                <ul class="badge-grid">
-                    <li class="badge reveal" data-badge="first-ride" style="--i:0" data-spot>
-                        <span class="medal"><i class="fas fa-route" aria-hidden="true"></i><i class="fas fa-lock lock" aria-hidden="true"></i></span>
-                        <h3>First Ride</h3>
-                        <p>Plot a trip in the route planner.</p>
-                        <span class="badge-state">Locked</span>
-                    </li>
-                    <li class="badge reveal" data-badge="pin-dropper" style="--i:1" data-spot>
-                        <span class="medal"><i class="fas fa-location-dot" aria-hidden="true"></i><i class="fas fa-lock lock" aria-hidden="true"></i></span>
-                        <h3>Pin Dropper</h3>
-                        <p>Tap a stop on the map.</p>
-                        <span class="badge-state">Locked</span>
-                    </li>
-                    <li class="badge reveal" data-badge="map-explorer" style="--i:2" data-spot>
-                        <span class="medal"><i class="fas fa-cube" aria-hidden="true"></i><i class="fas fa-lock lock" aria-hidden="true"></i></span>
-                        <h3>Map Explorer</h3>
-                        <p>Switch the demo map to 3D.</p>
-                        <span class="badge-state">Locked</span>
-                    </li>
-                    <li class="badge reveal" data-badge="feature-hunter" style="--i:3" data-spot>
-                        <span class="medal"><i class="fas fa-compass" aria-hidden="true"></i><i class="fas fa-lock lock" aria-hidden="true"></i></span>
-                        <h3>Feature Hunter</h3>
-                        <p>Open all six features.</p>
-                        <span class="badge-state">Locked</span>
-                    </li>
-                    <li class="badge reveal" data-badge="community-voice" style="--i:4" data-spot>
-                        <span class="medal"><i class="fas fa-bullhorn" aria-hidden="true"></i><i class="fas fa-lock lock" aria-hidden="true"></i></span>
-                        <h3>Community Voice</h3>
-                        <p>Share a sample update.</p>
-                        <span class="badge-state">Locked</span>
-                    </li>
-                    <li class="badge reveal" data-badge="end-of-line" style="--i:5" data-spot>
-                        <span class="medal"><i class="fas fa-flag-checkered" aria-hidden="true"></i><i class="fas fa-lock lock" aria-hidden="true"></i></span>
-                        <h3>End of the Line</h3>
-                        <p>Scroll all the way down.</p>
-                        <span class="badge-state">Locked</span>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
         <!-- ============ COMMUNITY GALLERY ============ -->
         <section id="community" class="section section-light">
             <div class="container">
-                <div class="section-header reveal">
+                <div class="section-header">
                     <p class="kicker">Community</p>
                     <h2 class="section-title">Made for the way CAMANAVA moves</h2>
                     <p class="section-description">
@@ -394,28 +300,28 @@
                     </p>
                 </div>
                 <div class="gallery">
-                    <figure class="gallery-item g-a reveal" style="--i:0">
+                    <figure class="gallery-item g-a">
                         <div class="photo-slot" style="--ratio:auto">
                             <div class="ph"><i class="fas fa-camera" aria-hidden="true"></i><span>Caloocan landmark</span><code>assets/photos/community-caloocan.jpg</code></div>
                             <img src="assets/photos/community-caloocan.jpg" alt="Bonifacio Monument in Caloocan" loading="lazy" onerror="this.remove()">
                         </div>
                         <figcaption><strong>Caloocan</strong><small>Photo: Ralff Nestor S. Nacor</small></figcaption>
                     </figure>
-                    <figure class="gallery-item g-b reveal" style="--i:1">
+                    <figure class="gallery-item g-b">
                         <div class="photo-slot" style="--ratio:auto">
                             <div class="ph"><i class="fas fa-camera" aria-hidden="true"></i><span>Malabon landmark</span><code>assets/photos/community-malabon.jpg</code></div>
                             <img src="assets/photos/community-malabon.jpg" alt="A landmark in Malabon" loading="lazy" onerror="this.remove()">
                         </div>
                         <figcaption><strong>Malabon</strong><small>Photo: Ralff Nestor S. Nacor</small></figcaption>
                     </figure>
-                    <figure class="gallery-item g-c reveal" style="--i:2">
+                    <figure class="gallery-item g-c">
                         <div class="photo-slot" style="--ratio:auto">
                             <div class="ph"><i class="fas fa-camera" aria-hidden="true"></i><span>Navotas landmark</span><code>assets/photos/community-navotas.jpg</code></div>
                             <img src="assets/photos/community-navotas.jpg" alt="A landmark in Navotas" loading="lazy" onerror="this.remove()">
                         </div>
                         <figcaption><strong>Navotas</strong><small>Photo: Ramon F Velasquez</small></figcaption>
                     </figure>
-                    <figure class="gallery-item g-d reveal" style="--i:3">
+                    <figure class="gallery-item g-d">
                         <div class="photo-slot" style="--ratio:auto">
                             <div class="ph"><i class="fas fa-camera" aria-hidden="true"></i><span>Valenzuela landmark</span><code>assets/photos/community-valenzuela.jpg</code></div>
                             <img src="assets/photos/community-valenzuela.jpg" alt="A landmark in Valenzuela" loading="lazy" onerror="this.remove()">
@@ -430,13 +336,13 @@
         <section id="download" class="section section-dark">
             <div class="dot-pattern" aria-hidden="true"></div>
             <div class="container">
-                <div class="section-header reveal">
+                <div class="section-header">
                     <h2 class="section-title">Download TransitPH</h2>
                     <p class="section-description">
                         Download the current Android APK and start exploring better local routes.
                     </p>
                 </div>
-                <div class="download-grid reveal">
+                <div class="download-grid">
                     <div class="download-card">
                         <div class="download-icon">
                             <i class="fab fa-android" aria-hidden="true"></i>
@@ -447,10 +353,10 @@
                             <i class="fas fa-download" aria-hidden="true"></i>
                             Download APK
                         </a>
-                        <span class="version-badge">v1.0.30</span>
+                        <span class="version-badge">v1.0.31</span>
                     </div>
                 </div>
-                <div class="qr-section reveal">
+                <div class="qr-section">
                     <p>Prefer your phone? Scan to download the APK.</p>
                     <div class="qr-code">
                         <img src="https://api.qrserver.com/v1/create-qr-code/?size=290x290&data=https%3A%2F%2Fgithub.com%2FAceeeee29%2Ftransit-ph-beta%2Freleases%2Fdownload%2Fv1.0.30%2Fapp-release.apk" width="145" height="145" loading="lazy" referrerpolicy="no-referrer" alt="QR code for the TransitPH Android APK download">
@@ -463,7 +369,7 @@
         <section id="about" class="section section-light">
             <div class="container">
                 <div class="about-grid">
-                    <div class="about-content reveal">
+                    <div class="about-content">
                         <p class="kicker">About</p>
                         <h2 class="section-title">About TransitPH</h2>
 
@@ -484,10 +390,6 @@
 
                         <div class="about-features">
                             <div class="about-feature">
-                                <i class="fas fa-check-circle" aria-hidden="true"></i>
-                                <span>Community-Informed</span>
-                            </div>
-                            <div class="about-feature">
                                 <i class="fas fa-users" aria-hidden="true"></i>
                                 <span>Community-Based</span>
                             </div>
@@ -507,7 +409,7 @@
 
         <section class="cta-section">
             <div class="container">
-                <div class="cta-content reveal">
+                <div class="cta-content">
                     <img class="cta-logo" src="assets/transitph-logo.png" width="80" height="73" alt="TransitPH logo" loading="lazy" decoding="async">
                     <h2>Ready to navigate CAMANAVA?</h2>
                     <a href="#download" class="btn btn-cta">
@@ -519,7 +421,13 @@
         </section>
     </main>
 
-    <div class="toasts" id="toasts" aria-live="polite"></div>
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 TransitPH &middot; STI College Caloocan</p>
+            <p>Version <span class="footer-version">1.0.31</span></p>
+        </div>
+    </footer>
+
 
     <script src="script.js"></script>
 </body>
