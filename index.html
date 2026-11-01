@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TransitPH | CAMANAVA Transit Companion</title>
-    <meta name="description" content="TransitPH is a community-driven mobile app that helps commuters find routes, terminals, and fare estimates across Caloocan, Malabon, Navotas, and Valenzuela.">
+    <meta name="description" content="TransitPH is a community-driven mobile app that helps commuters find routes, estimated travel times, and fare estimates across Caloocan, Malabon, Navotas, and Valenzuela.">
     <meta name="theme-color" content="#103c68">
     <meta property="og:type" content="website">
     <meta property="og:title" content="TransitPH | CAMANAVA Transit Companion">
-    <meta property="og:description" content="Find routes, terminals, and fare estimates across Caloocan, Malabon, Navotas, and Valenzuela.">
+    <meta property="og:description" content="Find routes, estimate travel times, and fare estimates across Caloocan, Malabon, Navotas, and Valenzuela.">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -19,11 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
-    <!--
-        PHOTOS: every placeholder on this page is a ".photo-slot". Each one already points at a file
-        in assets/photos/ (see assets/photos/README.md). Drop a file with that name in the folder and
-        it replaces the placeholder automatically - no code changes needed.
-    -->
+
 
     <nav id="navbar" aria-label="Main">
         <div class="nav-container">
@@ -42,16 +38,16 @@
     </nav>
 
     <main>
-        <!-- ============ HERO ============ -->
+        <!-- HERO -->
         <section id="home" class="hero">
             <div class="container">
                 <div class="hero-grid">
                     <div class="hero-content">
-                        <p class="eyebrow"><i class="fas fa-location-dot" aria-hidden="true"></i> Built for CAMANAVA commuters</p>
+                        <p class="hero-tag"><i class="fas fa-location-dot" aria-hidden="true"></i> Built for CAMANAVA commuters</p>
                         <h1 class="hero-title">
-                            <span class="gradient-text">Your everyday route companion.</span>
+                            <span class="title-accent">Your everyday route companion.</span>
                         </h1>
-                        <p class="hero-description">
+                        <p class="hero-text">
                             TransitPH is a community-driven mobile application that helps commuters find routes, terminals, and fare estimates across Caloocan, Malabon, Navotas, and Valenzuela.
                         </p>
                         <div class="hero-buttons">
@@ -66,29 +62,19 @@
                         </div>
                     </div>
                     <div class="hero-visual">
-                        <div class="phone-tilt" id="phoneTilt">
-                            <div class="app-preview">
-                                <img class="app-preview-image" src="assets/transitph-app-screen.jpg" width="922" height="2048" decoding="async" alt="TransitPH map screen showing a route from Valenzuela to Caloocan with a 39 minute estimate and fare range">
-                            </div>
-                            <div class="chip chip-a">
-                                <span class="chip-icon"><i class="fas fa-clock" aria-hidden="true"></i></span>
-                                <span><small>Malabon to Caloocan</small><strong>39 min</strong></span>
-                            </div>
-                            <div class="chip chip-b">
-                                <span class="chip-icon"><i class="fas fa-peso-sign" aria-hidden="true"></i></span>
-                                <span><small>Fare</small><strong>₱21-26 Estimated</strong></span>
-                            </div>
+                        <div class="app-preview">
+                            <img class="app-preview-image" src="assets/transitph-app-screen.jpg" width="922" height="2048" decoding="async" alt="TransitPH map screen showing a route from Valenzuela to Caloocan with a 39 minute estimate and fare range">
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ============ ROUTE PLANNER DEMO ============ -->
-        <section id="planner" class="section section-light">
+        <!-- ROUTE PLANNER DEMO -->
+        <section id="planner" class="section bg-light">
             <div class="container">
                 <div class="section-header">
-                    <p class="kicker">Try it</p>
+                    <p class="section-tag">Try it</p>
                     <h2 class="section-title">Plot a trip across CAMANAVA</h2>
                     <p class="section-description">
                         A little taste of the app. Tap two stops on the map (or use the lists) and watch the route get plotted.
@@ -111,10 +97,7 @@
                         </div>
                         <div class="result" id="result" aria-live="polite"></div>
                         <div class="planner-tools">
-                            <button type="button" class="chip-btn" id="view3d" aria-pressed="false">
-                                <i class="fas fa-cube" aria-hidden="true"></i> <span>View in 3D</span>
-                            </button>
-                            <button type="button" class="chip-btn" id="clearRoute">
+                            <button type="button" class="small-btn" id="clearRoute">
                                 <i class="fas fa-rotate-left" aria-hidden="true"></i> Clear
                             </button>
                         </div>
@@ -153,17 +136,17 @@
                             <!-- pins are generated by script.js -->
                         </div>
                     </div>
-                    <p class="map-caption"><i class="fas fa-circle-info" aria-hidden="true"></i> Schematic map, not to scale. Times and fares are illustrative.</p>
+                    <p class="map-note"><i class="fas fa-circle-info" aria-hidden="true"></i> Schematic map, not to scale. Times and fares are illustrative.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ============ FEATURES EXPLORER ============ -->
-        <section id="features" class="section section-white">
+        <!-- FEATURES EXPLORER -->
+        <section id="features" class="section bg-white">
             <div class="container">
                 <div class="section-header">
-                    <p class="kicker">Features</p>
+                    <p class="section-tag">Features</p>
                     <h2 class="section-title">Everything for the everyday trip</h2>
                     <p class="section-description">
                         Practical tools for planning and understanding everyday trips around CAMANAVA. Pick one to peek inside.
@@ -201,13 +184,13 @@
                                     <img src="assets/photos/screen-updates.jpg" alt="TransitPH real time updates screen" onerror="this.remove()">
                                 </figure>
                             </div>
-                            <div class="stage-copy">
+                            <div class="stage-text">
                                 <h3>Real Time Updates</h3>
                                 <p>Get transit updates shared by fellow commuters in the community.</p>
-                                <div class="feed-card">
+                                <div class="feed-box">
                                     <div class="feed-head"><span class="live-dot" aria-hidden="true"></span> Route Reports <em>sample</em></div>
                                     <ul class="feed" id="feed" aria-live="polite"></ul>
-                                    <button type="button" class="chip-btn" id="shareUpdate"><i class="fas fa-bullhorn" aria-hidden="true"></i> Share a sample update</button>
+                                    <button type="button" class="small-btn" id="shareUpdate"><i class="fas fa-bullhorn" aria-hidden="true"></i> Share a sample update</button>
                                 </div>
                             </div>
                         </div>
@@ -220,7 +203,7 @@
                                     <img src="assets/transitph-app-screen.jpg" alt="TransitPH route result screen" onerror="this.remove()">
                                 </figure>
                             </div>
-                            <div class="stage-copy">
+                            <div class="stage-text">
                                 <h3>Route Planning</h3>
                                 <p>Plan trips with route options, estimated travel times, and fare information.</p>
                                 <a href="#planner" class="text-link">Try the route planner <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
@@ -235,7 +218,7 @@
                                     <img src="assets/photos/screen-badges.jpg" alt="TransitPH badges and achievements screen" onerror="this.remove()">
                                 </figure>
                             </div>
-                            <div class="stage-copy">
+                            <div class="stage-text">
                                 <h3>Gamification</h3>
                                 <p>Earn badges and achievements while traveling.</p>
                             </div>
@@ -249,7 +232,7 @@
                                     <img src="assets/photos/screen-community.jpg" alt="TransitPH community contributions screen" onerror="this.remove()">
                                 </figure>
                             </div>
-                            <div class="stage-copy">
+                            <div class="stage-text">
                                 <h3>Community-Based</h3>
                                 <p>Help improve local transit information for the whole community.</p>
                             </div>
@@ -263,7 +246,7 @@
                                     <img src="assets/photos/screen-fare.jpg" alt="TransitPH fare estimate screen" onerror="this.remove()">
                                 </figure>
                             </div>
-                            <div class="stage-copy">
+                            <div class="stage-text">
                                 <h3>Fare Estimation</h3>
                                 <p>Check fare estimates for trips across the CAMANAVA area.</p>
                                 <a href="#planner" class="text-link">See a sample estimate <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
@@ -278,10 +261,9 @@
                                     <img src="assets/photos/screen-map.jpg" alt="TransitPH 3D map screen" onerror="this.remove()">
                                 </figure>
                             </div>
-                            <div class="stage-copy">
+                            <div class="stage-text">
                                 <h3>Map</h3>
                                 <p>Explore 2D and 3D maps to find routes, terminals, and useful points of interest.</p>
-                                <a href="#planner" class="text-link">Flip the demo map to 3D <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
                             </div>
                         </div>
                     </div>
@@ -289,11 +271,11 @@
             </div>
         </section>
 
-        <!-- ============ COMMUNITY GALLERY ============ -->
-        <section id="community" class="section section-light">
+        <!-- COMMUNITY GALLERY -->
+        <section id="community" class="section bg-light">
             <div class="container">
                 <div class="section-header">
-                    <p class="kicker">Community</p>
+                    <p class="section-tag">Community</p>
                     <h2 class="section-title">Made for the way CAMANAVA moves</h2>
                     <p class="section-description">
                         Four cities, one community. A look at the places TransitPH is built for.
@@ -332,9 +314,8 @@
             </div>
         </section>
 
-        <!-- ============ DOWNLOAD ============ -->
-        <section id="download" class="section section-dark">
-            <div class="dot-pattern" aria-hidden="true"></div>
+        <!-- DOWNLOAD -->
+        <section id="download" class="section bg-dark">
             <div class="container">
                 <div class="section-header">
                     <h2 class="section-title">Download TransitPH</h2>
@@ -356,21 +337,21 @@
                         <span class="version-badge">v1.0.37</span>
                     </div>
                 </div>
-                <div class="qr-section">
+                <div class="qr-box">
                     <p>Prefer your phone? Scan to download the APK.</p>
                     <div class="qr-code">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=290x290&data=https%3A%2F%2Fgithub.com%2FAceeeee29%2Ftransit-ph-beta%2Freleases%2Fdownload%2Fv1.0.34%2Fapp-release.apk" width="145" height="145" loading="lazy" referrerpolicy="no-referrer" alt="QR code for the TransitPH Android APK download">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=290x290&data=https%3A%2F%2Fgithub.com%2FAceeeee29%2Ftransit-ph-beta%2Freleases%2Fdownload%2Fv1.0.37%2Fapp-release.apk" width="145" height="145" loading="lazy" referrerpolicy="no-referrer" alt="QR code for the TransitPH Android APK download">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ============ ABOUT ============ -->
-        <section id="about" class="section section-light">
+        <!-- ABOUT -->
+        <section id="about" class="section bg-light">
             <div class="container">
                 <div class="about-grid">
                     <div class="about-content">
-                        <p class="kicker">About</p>
+                        <p class="section-tag">About</p>
                         <h2 class="section-title">About TransitPH</h2>
 
                         <div class="about-text">
@@ -380,7 +361,7 @@
                             </details>
                             <details class="about-block" name="about">
                                 <summary>Our Project</summary>
-                                <p>TransitPH was developed as a thesis project based on common commuting challenges such as finding routes, identifying unfamiliar terminals, and estimating transportation fares. The project explores how community-contributed information can support commuters in navigating local public transportation.</p>
+                                <p>TransitPH was developed as a thesis project based on common commuting challenges such as finding routes, identifying unfamiliar locations, and estimating transportation fares. The project explores how community-contributed information can support commuters in navigating local public transportation.</p>
                             </details>
                             <details class="about-block" name="about">
                                 <summary>Community-Based Approach</summary>
@@ -424,7 +405,7 @@
     <footer class="site-footer">
         <div class="container">
             <p>&copy; 2026 TransitPH &middot; STI College Caloocan</p>
-            <p>Version <span class="footer-version">1.0.34</span></p>
+            <p>Version <span class="footer-version">1.0.37</span></p>
         </div>
     </footer>
 

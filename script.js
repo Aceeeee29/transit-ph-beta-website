@@ -5,9 +5,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-/* ==========================================================================
-   Navigation: smooth anchors, active links
-   ========================================================================== */
+/* navbar */
 const navbar = $('#navbar');
 
 $$('a[href^="#"]').forEach(anchor => {
@@ -32,14 +30,14 @@ function onScroll() {
     scrollTicking = false;
     navbar.classList.toggle('is-scrolled', window.scrollY > 8);
 
-    // Which section is "current" - probe a line 35% down the viewport
+    // check what section is 35% down the screen
     const probe = window.scrollY + window.innerHeight * 0.35;
     let index = 0;
     sectionEls.forEach((el, i) => {
         if (probe >= el.offsetTop) index = i;
     });
 
-    // Nav highlight: nearest section at or above the current one that has a nav link
+    // highlight the nav link
     let navId = SECTION_IDS[0];
     for (let i = index; i >= 0; i--) {
         if (navTargets.has(SECTION_IDS[i])) {
@@ -60,12 +58,7 @@ window.addEventListener('resize', onScroll);
 window.addEventListener('load', onScroll);
 onScroll();
 
-/* ==========================================================================
-   Download: keep the QR code and version badge in sync with the APK button
-   --------------------------------------------------------------------------
-   To release a new version, change ONLY the href of the "Download APK" button
-   in index.html. The QR code and the version badge follow it automatically.
-   ========================================================================== */
+/* qr code + version, follows the APK link in index.html */
 (function syncDownload() {
     const apkLink = $('.btn-download');
     const qrImage = $('.qr-code img');
@@ -78,19 +71,14 @@ onScroll();
         if (qrImage.getAttribute('src') !== qrUrl) qrImage.src = qrUrl;
     }
 
-    // GitHub release URLs look like .../releases/download/v1.0.30/file.apk
+    // get version from the release url
     const version = apkLink.href.match(/\/download\/(v?[\d.]+)\//);
     if (versionBadge && version) versionBadge.textContent = version[1].startsWith('v') ? version[1] : `v${version[1]}`;
     if (footerVersion && version) footerVersion.textContent = version[1].replace(/^v/, '');
 })();
 
-/* ==========================================================================
-   Route planner demo
-   --------------------------------------------------------------------------
-   Everything below is SAMPLE data for the website demo (a schematic map, not
-   real geography). Edit STOPS / LINKS / FARE to change the demo. The x/y values
-   are positions inside the 800 x 560 map drawing in index.html.
-   ========================================================================== */
+/* route planner demo
+   all sample data, x/y are positions on the 800x560 svg map */
 const STOPS = {
     malinta:     { name: 'Malinta',     city: 'Valenzuela', x: 320, y: 120 },
     karuhatan:   { name: 'Karuhatan',   city: 'Valenzuela', x: 225, y: 175 },
@@ -102,7 +90,7 @@ const STOPS = {
     fishport:    { name: 'Fish Port',   city: 'Navotas',    x: 120, y: 480 }
 };
 
-// [from, to, minutes, km, mode]
+// from, to, mins, km, mode
 const LINKS = [
     ['malinta', 'karuhatan', 8, 2.5, 'jeepney'],
     ['malinta', 'potrero', 14, 4.5, 'jeepney'],
@@ -115,8 +103,6 @@ const LINKS = [
     ['monumento', 'bagongsilang', 25, 10, 'jeepney'],
     ['monumento', 'tangos', 18, 6, 'jeepney']
 ];
-
-// Placeholder fare values - replace with real ones if you want the demo to match the app.
 const FARE = { jeepneyBase: 13, jeepneyBaseKm: 4, jeepneyPerKm: 1.8, tricycle: 20 };
 
 const MODE_INFO = {
@@ -139,9 +125,8 @@ const MODE_INFO = {
     const fromSel = $('#fromSel');
     const toSel = $('#toSel');
     const resultEl = $('#result');
-    const view3dBtn = $('#view3d');
 
-    // Graph
+    // build graph
     const adjacency = {};
     Object.keys(STOPS).forEach(id => (adjacency[id] = []));
     LINKS.forEach(([a, b, min, km, mode]) => {
@@ -157,7 +142,7 @@ const MODE_INFO = {
         edgesGroup.appendChild(line);
     });
 
-    // Pins
+    // pins
     const pins = {};
     Object.entries(STOPS).forEach(([id, stop]) => {
         const pin = document.createElement('div');
@@ -173,7 +158,7 @@ const MODE_INFO = {
         pins[id] = pin;
     });
 
-    // Selects
+    // dropdowns
     function fillSelect(select, placeholder) {
         select.innerHTML = '';
         const empty = new Option(placeholder, '');
@@ -191,7 +176,7 @@ const MODE_INFO = {
     fillSelect(fromSel, 'Choose a start');
     fillSelect(toSel, 'Choose a destination');
 
-    // Routing (Dijkstra by travel time)
+    // dijkstra
     function findRoute(from, to) {
         const dist = {};
         const prev = {};
@@ -228,7 +213,7 @@ const MODE_INFO = {
         return Math.max(FARE.jeepneyBase, FARE.jeepneyBase + FARE.jeepneyPerKm * (leg.km - FARE.jeepneyBaseKm));
     }
 
-    // Drawing
+    // draw route
     let animation = 0;
 
     function drawRoute(stopIds) {
@@ -291,7 +276,7 @@ const MODE_INFO = {
             <p class="note">Illustrative demo values, not official fares.</p>`;
     }
 
-    // State
+    // state
     const state = { from: '', to: '' };
 
     function sync(fromUser) {
@@ -357,13 +342,7 @@ const MODE_INFO = {
         sync(false);
     });
 
-    view3dBtn.addEventListener('click', () => {
-        const on = wrap.classList.toggle('is-3d');
-        view3dBtn.setAttribute('aria-pressed', String(on));
-        $('span', view3dBtn).textContent = on ? 'Back to 2D' : 'View in 3D';
-    });
-
-    // Show a sample trip the first time the planner scrolls into view
+    // auto demo when planner shows up
     renderEmpty('Tap two stops on the map, or use the lists above.');
     const demoObserver = new IntersectionObserver(([entry]) => {
         if (!entry.isIntersecting) return;
@@ -377,9 +356,7 @@ const MODE_INFO = {
     demoObserver.observe(wrap);
 })();
 
-/* ==========================================================================
-   Feature explorer (tabs) + sample community feed
-   ========================================================================== */
+/* feature tabs + sample feed */
 (function initExplorer() {
     const tabs = $$('[role="tab"]', $('#explorer'));
     const panels = tabs.map(tab => document.getElementById(tab.getAttribute('aria-controls')));
@@ -416,7 +393,7 @@ const MODE_INFO = {
         });
     });
 
-    // Sample feed
+    // feed
     const feed = $('#feed');
     const AGES = ['just now', '1 min ago', '3 min ago', '6 min ago'];
     const MAX_ITEMS = AGES.length;
